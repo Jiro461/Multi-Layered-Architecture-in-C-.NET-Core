@@ -1,15 +1,16 @@
-﻿using SOA_BaiTap.CommonLayer.Utilities;
+﻿using Microsoft.AspNetCore.Mvc;
+using SOA_BaiTap.CommonLayer.Utilities;
 using SOA_BaiTap.CoreLayer.DTO;
-using SOA_BaiTap.CoreLayer.Entities;
 using SOA_BaiTap.RepositoryLayer.Interfaces;
+using SOA_BaiTap.ServiceLayer.Services;
 
-namespace SOA_BaiTap.ServiceLayer.Services
+namespace SOA_BaiTap.CoreLayer.Entities
 {
     public class MovieService : IMovieService
     {
         private readonly IMovieRepository _movieRepository;
         private readonly ITagRepository _tagRepository;
-        public  MovieService (IMovieRepository movieRepository, ITagRepository tagRepository)
+        public MovieService(IMovieRepository movieRepository, ITagRepository tagRepository)
         {
             _movieRepository = movieRepository;
             _tagRepository = tagRepository;
@@ -31,7 +32,6 @@ namespace SOA_BaiTap.ServiceLayer.Services
             };
 
             var Tags = await _tagRepository.GetListTag(moviedto.Tags.ToList());
-
             if (Tags != null && Tags.Any())
             {
                 Tags.ForEach(tag => movie.MovieSeriesTags.Add(new MovieSeriesTag
@@ -42,7 +42,7 @@ namespace SOA_BaiTap.ServiceLayer.Services
             }
             await _movieRepository.AddMovieAsync(movie);
         }
-        public async Task<MovieGetDTO> GetMovieByIdAsync (int id)
+        public async Task<MovieGetDTO> GetMovieByIdAsync(int id)
         {
             var movie = await _movieRepository.GetMovieByIdAsync(id);
             if (movie == null)
@@ -62,7 +62,7 @@ namespace SOA_BaiTap.ServiceLayer.Services
 
         public async Task<List<MovieGetDTO>> GetMoviesAsync()
         {
-            var movies = (await _movieRepository.GetMoviesAsync());
+            var movies = await _movieRepository.GetMoviesAsync();
             var data = movies.Select(movie => new MovieGetDTO
             {
                 Id = movie.Id,
@@ -75,14 +75,22 @@ namespace SOA_BaiTap.ServiceLayer.Services
             return data.ToList();
         }
 
-        public Task<Movie> UpdateMovie(int id, MovieDTO movie)
+        public async Task<MovieDTO?> UpdateMovie(int id, MovieDTO moviedto)
         {
-            throw new NotImplementedException();
+            var movie = await _movieRepository.GetMovieByIdAsync(id);
+            if (movie == null) return null;
+            movie.Title = moviedto.Title;
+            movie.Description = moviedto.Description;
+            movie.Genre = moviedto.Genre;
+            movie.ReleaseDate = moviedto.ReleaseDate.ToDateTime();
+            await _movieRepository.UpdateMovieAsync(movie);
+            return moviedto;
         }
 
-        Task<Movie> IMovieService.GetMovieByIdAsync(int id)
+        public async Task<bool> DeleteMovie (int id)
         {
-            throw new NotImplementedException();
+            return await _movieRepository.DeleteMovieAsync(id);
+       
         }
     }
 }

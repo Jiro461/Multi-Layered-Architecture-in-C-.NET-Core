@@ -16,7 +16,7 @@ namespace SOA_BaiTap.Controllers
             _movieService = movieService;
         }
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetMovie(int id)
+        public async Task<IActionResult> GetMovieById(int id)
         {
             var movie = await _movieService.GetMovieByIdAsync(id);
             if (movie == null) return NotFound();
@@ -34,6 +34,21 @@ namespace SOA_BaiTap.Controllers
             return Ok(movie);
         }
 
-
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutMovie (int id, MovieDTO movie)
+        {
+            var result = await _movieService.UpdateMovie(id, movie);
+            if(result == null) return NotFound();
+            return Ok(result);
+        }
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteMovie(int id)
+        {
+            if (await _movieService.DeleteMovie(id))
+            {
+                return NoContent();
+            }
+            return BadRequest();
+        }
     }
 }
