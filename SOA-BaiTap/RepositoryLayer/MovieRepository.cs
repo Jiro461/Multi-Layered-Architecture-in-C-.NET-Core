@@ -38,11 +38,13 @@ namespace SOA_BaiTap.RepositoryLayer
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteMovieAsync (int movieId)
+        public async Task<bool> DeleteMovieAsync (int movieId)
         {
             var movie = await _context.Movies.FindAsync(movieId);
-            if (movie == null) return; 
+            if (movie == null) return false; 
             _context.Movies.Remove(movie);
+            _context.SaveChangesAsync();
+            return true;
         }
 
     }

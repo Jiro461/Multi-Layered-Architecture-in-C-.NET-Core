@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using SOA_BaiTap.CoreLayer.Entities;
 using SOA_BaiTap.DAL;
 using SOA_BaiTap.RepositoryLayer;
 using SOA_BaiTap.RepositoryLayer.Interfaces;
