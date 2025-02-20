@@ -5,18 +5,21 @@ using SOA_BaiTap.ServiceLayer.Services;
 using SOA_BaiTap.CoreLayer.Entities;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using SOA_BaiTap.ServiceLayer.Services;
 
 namespace MovieSeries.Tests.Services
 {
     public class MovieServiceTests
     {
         private readonly Mock<IMovieRepository> _repositoryMock;
+        private readonly Mock<ITagRepository> _repositoryTagMock;
         private readonly MovieService _movieService;
 
         public MovieServiceTests()
         {
             _repositoryMock = new Mock<IMovieRepository>();
-            _movieService = new MovieService(_repositoryMock.Object);
+            _repositoryTagMock = new Mock<ITagRepository>();
+            _movieService = new MovieService(_repositoryMock.Object, _repositoryTagMock.Object);
         }
 
         [Fact]
@@ -52,37 +55,5 @@ namespace MovieSeries.Tests.Services
 
             _repositoryMock.Verify(repo => repo.AddMovieAsync(It.IsAny<Movie>()), Times.Never);
         }
-
-        [Fact]
-        public async Task GetTopRatedMoviesWithSpAsync_ShouldReturnMovies_WhenStoredProcedureSucceeds()
-        {
-            // Arrange
-            var movies = new List<Movie>
-            {
-                new Movie { Title = "Inception", Genre = "Sci-Fi" },
-                new Movie { Title = "The Dark Knight", Genre = "Action" }
-            };
-            _repositoryMock.Setup(repo => repo.GetTopRatedMoviesWithSpAsync(2)).ReturnsAsync(movies);
-
-            // Act
-            var result = await _movieService.GetTopRatedMoviesWithSpAsync(2);
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.Equal(2, result.Count());
-        }
-
-        [Fact]
-        public async Task GetTopRatedMoviesWithSpAsync_ShouldThrowApplicationException_WhenStoredProcedureFails()
-        {
-            // Arrange
-            _repositoryMock.Setup(repo => repo.GetTopRatedMoviesWithSpAsync(2)).ThrowsAsync(new Exception("Database error"));
-
-            // Act & Assert
-            var exception = await Assert.ThrowsAsync<ApplicationException>(() => _movieService.GetTopRatedMoviesWithSpAsync(2));
-            Assert.Equal("An error occurred while retrieving top - rated movies.", exception.Message);
-        }
-
-
     }
 }

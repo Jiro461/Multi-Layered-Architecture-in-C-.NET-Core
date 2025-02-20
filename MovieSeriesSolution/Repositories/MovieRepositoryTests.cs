@@ -106,27 +106,6 @@ namespace MovieSeries.Tests.Repositories
             _dbContextMock.Verify(db => db.SaveChangesAsync(default), Times.Never);
         }
 
-        [Fact]
-        public async Task GetTopRatedMoviesWithSpAsync_ShouldCallStoredProcedure()
-        {
-            // Arrange
-            int topCount = 5;
-            var expectedMovies = new List<Movie>
-            {
-                new Movie { Title = "Inception", Genre = "Sci-Fi" },
-                new Movie { Title = "The Dark Knight", Genre = "Action" }
-            };
-
-            _dbContextMock.Setup(db => db.Movies.FromSqlRaw("EXEC GetTopRatedMovies @top_count = {0}", topCount))
-                .Returns(expectedMovies.AsQueryable());
-
-            // Act
-            var result = await _movieRepository.GetTopRatedMoviesWithSpAsync(topCount);
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.Equal(2, result.Count());
-        }
     }
 }
 

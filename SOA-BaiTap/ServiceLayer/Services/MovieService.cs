@@ -39,6 +39,12 @@ namespace SOA_BaiTap.ServiceLayer.Services
             }));
             await _movieRepository.AddMovieAsync(movie);
         }
+
+        public async Task AddMovieAsync(Movie movie)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<Movie> GetMovieByIdAsync (int id)
         {
             var movie = await _movieRepository.GetMovieByIdAsync(id);

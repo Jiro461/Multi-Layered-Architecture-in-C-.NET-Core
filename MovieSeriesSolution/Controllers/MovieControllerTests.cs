@@ -1,10 +1,11 @@
 using Xunit;
 using Moq;
 using Microsoft.AspNetCore.Mvc;
+using SOA_BaiTap.Controllers;
 using SOA_BaiTap.ServiceLayer.Services;
-using SOA_BaiTap.CoreLayer.Entities;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using SOA_BaiTap.CoreLayer.Entities;
 
 namespace MovieSeries.Tests.Controllers
 {
