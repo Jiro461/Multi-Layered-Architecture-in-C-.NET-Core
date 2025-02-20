@@ -42,5 +42,12 @@ namespace SOA_BaiTap.RepositoryLayer
             if (movie == null) return; 
             _context.Movies.Remove(movie);
         }
+
+        public async Task<IEnumerable<Movie>> GetTopRatedMoviesWithSpAsync(int topCount)
+        {
+            return await _context.Movies
+            .FromSqlRaw("EXEC GetTopRatedMovies @top_count = {0}", topCount)
+            .ToListAsync();
+        }
     }
 }
