@@ -5,6 +5,8 @@ VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SOA-BaiTap", "SOA-BaiTap\SOA-BaiTap.csproj", "{18C698A2-96AC-4C69-AD92-98B82998B2A7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieSeries.Tests", "MovieSeriesSolution\MovieSeries.Tests.csproj", "{F9D4372E-0AD7-49F7-AD6F-59368E5C9892}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{18C698A2-96AC-4C69-AD92-98B82998B2A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{18C698A2-96AC-4C69-AD92-98B82998B2A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{18C698A2-96AC-4C69-AD92-98B82998B2A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9D4372E-0AD7-49F7-AD6F-59368E5C9892}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9D4372E-0AD7-49F7-AD6F-59368E5C9892}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9D4372E-0AD7-49F7-AD6F-59368E5C9892}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9D4372E-0AD7-49F7-AD6F-59368E5C9892}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
