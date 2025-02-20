@@ -23,6 +23,10 @@ namespace SOA_BaiTap.RepositoryLayer
             return await _context.Movies.ToListAsync();
         }
 
+        public async Task<Movie?> GetMovieByIdAsync(int id)
+        {
+            return await _context.Movies.FindAsync(id);
+        }
 
         public async Task AddMovieAsync(Movie movie)
         {
@@ -43,11 +47,5 @@ namespace SOA_BaiTap.RepositoryLayer
             _context.Movies.Remove(movie);
         }
 
-        public async Task<IEnumerable<Movie>> GetTopRatedMoviesWithSpAsync(int topCount)
-        {
-            return await _context.Movies
-            .FromSqlRaw("EXEC GetTopRatedMovies @top_count = {0}", topCount)
-            .ToListAsync();
-        }
     }
 }
