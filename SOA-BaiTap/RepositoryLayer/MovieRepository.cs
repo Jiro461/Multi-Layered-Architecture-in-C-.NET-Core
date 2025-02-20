@@ -43,7 +43,7 @@ namespace SOA_BaiTap.RepositoryLayer
             var movie = await _context.Movies.FindAsync(movieId);
             if (movie == null) return false; 
             _context.Movies.Remove(movie);
-            _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
             return true;
         }
 
