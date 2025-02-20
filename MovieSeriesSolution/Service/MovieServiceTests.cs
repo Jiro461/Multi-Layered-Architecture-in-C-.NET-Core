@@ -1,8 +1,8 @@
 using Xunit;
 using Moq;
-using MovieSeries.RepositoryLayer.Interfaces;
-using MovieSeries.ServiceLayer.Services;
-using MovieSeries.CoreLayer.Entities;
+using SOA_BaiTap.RepositoryLayer.Interfaces;
+using SOA_BaiTap.ServiceLayer.Services;
+using SOA_BaiTap.CoreLayer.Entities;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 
