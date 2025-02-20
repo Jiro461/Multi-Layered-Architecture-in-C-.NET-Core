@@ -17,7 +17,7 @@ namespace SOA_BaiTap.ServiceLayer.Services
         //Crud Methods
         public async Task AddMovieAsync(MovieDTO moviedto)
         {
-            var existingMovies = await _movieRepository.GetAllMoviesAsync();
+            var existingMovies = await _movieRepository.GetMoviesAsync();
             if (existingMovies.Any(m => m.Title == moviedto.Title))
             {
                 throw new ArgumentException("A movie with the same title already exists.");
@@ -39,15 +39,47 @@ namespace SOA_BaiTap.ServiceLayer.Services
             }));
             await _movieRepository.AddMovieAsync(movie);
         }
-        public async Task<Movie> GetMovieByIdAsync (int id)
+        public async Task<MovieGetDTO> GetMovieByIdAsync (int id)
         {
             var movie = await _movieRepository.GetMovieByIdAsync(id);
             if (movie == null)
             {
                 throw new ArgumentException("Not Found Movie.");
             }
-            return movie;
+            return new MovieGetDTO
+            {
+                Id = movie.Id,
+                Title = movie.Title,
+                Genre = movie.Genre,
+                ReleaseDate = movie.ReleaseDate.FormatDate(),
+                Description = movie.Description,
+                Tags = movie.MovieSeriesTags.Select(mst => mst.Tag.Name).ToList()
+            };
         }
-        
+
+        public async Task<List<MovieGetDTO>> GetMoviesAsync()
+        {
+            var movies = (await _movieRepository.GetMoviesAsync());
+            var data = movies.Select(movie => new MovieGetDTO
+            {
+                Id = movie.Id,
+                Title = movie.Title,
+                Genre = movie.Genre,
+                ReleaseDate = movie.ReleaseDate.FormatDate(),
+                Description = movie.Description,
+                Tags = movie.MovieSeriesTags.Select(mst => mst.Tag.Name).ToList()
+            });
+            return data.ToList();
+        }
+
+        public Task<Movie> UpdateMovie(int id, MovieDTO movie)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<Movie> IMovieService.GetMovieByIdAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

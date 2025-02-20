@@ -22,7 +22,11 @@ namespace SOA_BaiTap.Controllers
             if (movie == null) return NotFound();
             return Ok(movie);
         }
-
+        [HttpGet("/all")]
+        public async Task<IActionResult> GetAllMovies()
+        {
+            return Ok(await _movieService.GetMoviesAsync());
+        }
         [HttpPost]
         public async Task<IActionResult> CreateMovie (MovieDTO movie)
         {
