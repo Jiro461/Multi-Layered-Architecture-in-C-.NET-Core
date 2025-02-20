@@ -67,7 +67,7 @@ namespace SOA_BaiTap.RepositoryLayer
 
         public async Task<List<Tag>> GetListTag (List<string> Names)
         {
-            var Tags =  await _context.Tags.Where(t => Names.Any(Name => Name.ToLower() == t.Name)).ToListAsync();
+            var Tags =  await _context.Tags.Where(t => Names.Any(Name => Name.ToLower() == t.Name)).ToListAsync() ?? new List<Tag>();
             return Tags;
         }
 
