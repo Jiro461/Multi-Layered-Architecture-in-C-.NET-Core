@@ -11,6 +11,7 @@ namespace SOA_BaiTap.DAL
         public DbSet<User> Users { get; set; }
         public DbSet<Rating> Ratings { get; set; }
         public DbSet<MovieSeriesTag> MovieSeriesTags { get; set; }
+        
         public AppDbContext(DbContextOptions<AppDbContext> options) :
        base(options)
         { }

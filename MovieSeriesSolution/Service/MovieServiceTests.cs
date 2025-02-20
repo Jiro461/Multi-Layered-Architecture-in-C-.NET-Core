@@ -6,6 +6,8 @@ using SOA_BaiTap.CoreLayer.Entities;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using SOA_BaiTap.ServiceLayer.Services;
+using SOA_BaiTap.CoreLayer.DTO;
+using SOA_BaiTap.CommonLayer.Utilities;
 
 namespace MovieSeries.Tests.Services
 {
@@ -26,34 +28,40 @@ namespace MovieSeries.Tests.Services
         public async Task AddMovieAsync_ShouldCallRepositoryAddAsync_WhenMovieIsUnique()
         {
             // Arrange
-            var movie = new Movie { Title = "Inception", Genre = "Sci-Fi" };
-            _repositoryMock.Setup(repo => repo.GetAllMoviesAsync()).ReturnsAsync(new List<Movie>());
-            _repositoryMock.Setup(repo => repo.AddMovieAsync(movie)).Returns(Task.CompletedTask);
+            var movieDTO = new MovieDTO { Title = "Inception", Genre = "Sci-Fi", ReleaseDate = "26/04/2004", Description = "gr" };
+            var movieEntity = new Movie { Title = "Inception", Genre = "Sci-Fi", ReleaseDate = "26/04/2004".ToDateTime(), Description = "gr" };
+
+            _repositoryMock.Setup(repo => repo.GetMoviesAsync()).ReturnsAsync(new List<Movie>());
+            _repositoryMock.Setup(repo => repo.AddMovieAsync(It.IsAny<Movie>())).Returns(Task.CompletedTask);
 
             // Act
-            await _movieService.AddMovieAsync(movie);
+            await _movieService.AddMovieAsync(movieDTO);
 
             // Assert
-            _repositoryMock.Verify(repo => repo.AddMovieAsync(movie), Times.Once);
+            _repositoryMock.Verify(repo => repo.AddMovieAsync(It.Is<Movie>(
+                m => m.Title == movieDTO.Title && m.Genre == movieDTO.Genre
+            )), Times.Once);
         }
+
 
         [Fact]
         public async Task AddMovieAsync_ShouldThrowException_WhenMovieTitleExists()
         {
             // Arrange
             var existingMovies = new List<Movie>
-            {
-                new Movie { Title = "Inception", Genre = "Sci-Fi" }
-            };
-            var newMovie = new Movie { Title = "Inception", Genre = "Action" };
+    {
+        new Movie { Title = "Inception", Genre = "Sci-Fi" }
+    };
+            var newMovieDto = new MovieDTO { Title = "Inception", Genre = "Action" }; 
 
-            _repositoryMock.Setup(repo => repo.GetAllMoviesAsync()).ReturnsAsync(existingMovies);
+            _repositoryMock.Setup(repo => repo.GetMoviesAsync()).ReturnsAsync(existingMovies);
 
             // Act & Assert
-            var exception = await Assert.ThrowsAsync<ArgumentException>(() => _movieService.AddMovieAsync(newMovie));
+            var exception = await Assert.ThrowsAsync<ArgumentException>(() => _movieService.AddMovieAsync(newMovieDto));
             Assert.Equal("A movie with the same title already exists.", exception.Message);
 
             _repositoryMock.Verify(repo => repo.AddMovieAsync(It.IsAny<Movie>()), Times.Never);
         }
+
     }
 }

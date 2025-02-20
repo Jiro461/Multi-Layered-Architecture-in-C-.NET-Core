@@ -6,6 +6,13 @@
         public string Genre { get; set; }
         public string ReleaseDate { get; set; }
         public string Description { get; set; }
-        public ICollection<string> Tags { get; set; }
+        public ICollection<string> Tags { get; set; } = new List<string>();
+    }
+
+    public class MovieGetDTO : MovieDTO
+    {
+        public int Id { get; set; }
+
+        
     }
 }

@@ -47,5 +47,10 @@ namespace SOA_BaiTap.CommonLayer.Utilities
             // Ném ra ngoại lệ nếu không thể chuyển đổi
             throw new ArgumentException($"Chuỗi '{dateString}' không thể chuyển đổi thành kiểu DateTime với định dạng '{format}'.");
         }
+
+        public static string FormatDate(this DateTime date, string format = "dd/MM/yyyy")
+        {
+            return date.ToString(format);
+        }
     }
 }

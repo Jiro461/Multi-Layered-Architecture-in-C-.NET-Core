@@ -13,14 +13,12 @@ namespace SOA_BaiTap.RepositoryLayer
             _context = appDbContext;
         }
 
-        public async Task<IEnumerable<Movie>> GetMoviesAsync()
+        public async Task<List<Movie>> GetMoviesAsync()
         {
-            return await _context.Movies.ToListAsync();
-        }
-
-        public async Task<IEnumerable<Movie>> GetAllMoviesAsync()
-        {
-            return await _context.Movies.ToListAsync();
+            return await _context.Movies
+                .Include(m => m.MovieSeriesTags) // Load MovieSeriesTags
+                .ThenInclude(mst => mst.Tag)     // Load Tag bên trong
+                .ToListAsync();
         }
 
         public async Task<Movie?> GetMovieByIdAsync(int id)
