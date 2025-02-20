@@ -4,6 +4,8 @@
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public ICollection<MovieSeriesTag> MovieSeriesTag { get; set; }
+
+        // Quan hệ nhiều-nhiều với Movie
+        public ICollection<MovieSeriesTag> MovieSeriesTags { get; set; } = new HashSet<MovieSeriesTag>();
     }
 }

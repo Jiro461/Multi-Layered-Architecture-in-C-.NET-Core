@@ -1,6 +1,6 @@
-using Xunit;
+﻿using Xunit;
 using System.ComponentModel.DataAnnotations;
-using MovieSeries.CoreLayer.Entities;
+using SOA_BaiTap.CoreLayer.Entities;
 using System.Collections.Generic;
 
 namespace MovieSeries.Tests.Models
@@ -11,7 +11,7 @@ namespace MovieSeries.Tests.Models
         public void Movie_ShouldRequireTitle()
         {
             // Arrange
-            var movie = new Movie { Genre = "Sci-Fi" }; // Thi?u Title
+            var movie = new Movie { Genre = "Sci-Fi" }; // Thiếu Title
 
             // Act
             var validationResults = ValidateModel(movie);
@@ -24,7 +24,7 @@ namespace MovieSeries.Tests.Models
         public void Movie_ShouldRequireGenre()
         {
             // Arrange
-            var movie = new Movie { Title = "Inception" }; // Thi?u Genre
+            var movie = new Movie { Title = "Inception" }; // Thiếu Genre
 
             // Act
             var validationResults = ValidateModel(movie);

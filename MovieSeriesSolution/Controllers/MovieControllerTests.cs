@@ -1,17 +1,19 @@
 using Xunit;
 using Moq;
 using Microsoft.AspNetCore.Mvc;
-using MovieSeries.ServiceLayer.Services;
-using MovieSeries.CoreLayer.Entities;
+using SOA_BaiTap.Controllers;
+using SOA_BaiTap.ServiceLayer.Services;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using SOA_BaiTap.CoreLayer.Entities;
+using SOA_BaiTap.CoreLayer.DTO;
 
 namespace MovieSeries.Tests.Controllers
 {
     public class MovieControllerTests
     {
         private readonly Mock<IMovieService> _serviceMock;
-        private readonly MovieController _controller;
+        private readonly  MovieController _controller;
 
         public MovieControllerTests()
         {
@@ -23,15 +25,24 @@ namespace MovieSeries.Tests.Controllers
         public async Task GetMovies_ReturnsOkResult_WithListOfMovies()
         {
             // Arrange
-            var movies = new List<Movie> { new Movie { Title = "Inception" }, new Movie { Title = "The Matrix" } };
-            _serviceMock.Setup(s => s.GetAllMoviesAsync()).ReturnsAsync(movies);
+            var movies = new List<MovieGetDTO>
+            {
+                new MovieGetDTO { Title = "Inception" },
+                new MovieGetDTO { Title = "The Matrix" }
+            };
+
+            _serviceMock.Setup(s => s.GetMoviesAsync()).ReturnsAsync(movies);
 
             // Act
-            var result = await _controller.GetMovies();
+            var result = await _controller.GetAllMovies();
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result);
-            Assert.Equal(movies, okResult.Value);
+            var returnMovies = Assert.IsType<List<MovieGetDTO>>(okResult.Value);
+
+            Assert.NotNull(returnMovies);
+            Assert.Equal(2, returnMovies.Count);
         }
+
     }
 }

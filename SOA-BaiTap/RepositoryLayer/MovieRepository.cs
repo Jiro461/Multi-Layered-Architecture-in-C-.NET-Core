@@ -13,16 +13,18 @@ namespace SOA_BaiTap.RepositoryLayer
             _context = appDbContext;
         }
 
-        public async Task<IEnumerable<Movie>> GetMoviesAsync()
+        public async Task<List<Movie>> GetMoviesAsync()
         {
-            return await _context.Movies.ToListAsync();
+            return await _context.Movies
+                .Include(m => m.MovieSeriesTags) // Load MovieSeriesTags
+                .ThenInclude(mst => mst.Tag)     // Load Tag bên trong
+                .ToListAsync();
         }
 
-        public async Task<IEnumerable<Movie>> GetAllMoviesAsync()
+        public async Task<Movie?> GetMovieByIdAsync(int id)
         {
-            return await _context.Movies.ToListAsync();
+            return await _context.Movies.FindAsync(id);
         }
-
 
         public async Task AddMovieAsync(Movie movie)
         {
@@ -36,11 +38,14 @@ namespace SOA_BaiTap.RepositoryLayer
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteMovieAsync (int movieId)
+        public async Task<bool> DeleteMovieAsync (int movieId)
         {
             var movie = await _context.Movies.FindAsync(movieId);
-            if (movie == null) return; 
+            if (movie == null) return false; 
             _context.Movies.Remove(movie);
+            _context.SaveChangesAsync();
+            return true;
         }
+
     }
 }

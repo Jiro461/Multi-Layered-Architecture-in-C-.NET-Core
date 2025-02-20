@@ -1,12 +1,13 @@
-﻿namespace SOA_BaiTap.CoreLayer.Entities
+﻿using SOA_BaiTap.CoreLayer.Entities;
+
+namespace SOA_BaiTap.CoreLayer.DTO
 {
-    public class Review
+    public class ReviewDTO
     {
         public int Id { get; set; }
 
         // Liên kết với User
         public int UserId { get; set; }
-        public User User { get; set; }
 
         // Liên kết với Movie
         public int MovieId { get; set; }
@@ -14,5 +15,10 @@
 
         public string ReviewText { get; set; }
         public DateTime ReviewDate { get; set; } = DateTime.Now;
+    }
+
+    public class ReviewGetDTO : ReviewDTO
+    {
+
     }
 }

@@ -1,5 +1,10 @@
 using Microsoft.EntityFrameworkCore;
+using SOA_BaiTap.CoreLayer.Entities;
 using SOA_BaiTap.DAL;
+using SOA_BaiTap.RepositoryLayer;
+using SOA_BaiTap.RepositoryLayer.Interfaces;
+using SOA_BaiTap.ServiceLayer;
+using SOA_BaiTap.ServiceLayer.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,10 +14,18 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-var app = builder.Build();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddTransient<IMovieRepository, MovieRepository>();
+builder.Services.AddTransient<ITagRepository, TagRepository>();
+builder.Services.AddTransient<IMovieService, MovieService>();
+builder.Services.AddTransient<IUserRepository, UserRepository>();
+builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddTransient<IReviewRepository, ReviewRepository>();
+builder.Services.AddTransient<IReviewService, ReviewService>();
+var app = builder.Build();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
