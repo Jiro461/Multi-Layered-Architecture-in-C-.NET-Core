@@ -1,40 +1,53 @@
-﻿using SOA_BaiTap.CoreLayer.Entities;
+﻿using SOA_BaiTap.CommonLayer.Utilities;
+using SOA_BaiTap.CoreLayer.DTO;
+using SOA_BaiTap.CoreLayer.Entities;
 using SOA_BaiTap.RepositoryLayer.Interfaces;
 
 namespace SOA_BaiTap.ServiceLayer.Services
 {
-    public class MovieService
+    public class MovieService : IMovieService
     {
         private readonly IMovieRepository _movieRepository;
-        public  MovieService (IMovieRepository movieRepository)
+        private readonly ITagRepository _tagRepository;
+        public  MovieService (IMovieRepository movieRepository, ITagRepository tagRepository)
         {
             _movieRepository = movieRepository;
+            _tagRepository = tagRepository;
         }
         //Crud Methods
-        public async Task AddMovieAsync(Movie movie)
+        public async Task AddMovieAsync(MovieDTO moviedto)
         {
             var existingMovies = await _movieRepository.GetAllMoviesAsync();
-            if (existingMovies.Any(m => m.Title == movie.Title))
+            if (existingMovies.Any(m => m.Title == moviedto.Title))
             {
                 throw new ArgumentException("A movie with the same title already exists.");
             }
+            var movie = new Movie
+            {
+                Title = moviedto.Title,
+                Genre = moviedto.Genre,
+                ReleaseDate = moviedto.ReleaseDate.ToDateTime(),
+                Description = moviedto.Description
+            };
+
+            var Tags = await _tagRepository.GetListTag(moviedto.Tags.ToList());
+
+            Tags.ForEach(tag => movie.MovieSeriesTags.Add(new MovieSeriesTag
+            {
+                Movie = movie,
+                Tag = tag,
+            }));
             await _movieRepository.AddMovieAsync(movie);
         }
-
-        // Stored Procedure Method
-        public async Task<IEnumerable<Movie>> GetTopRatedMoviesWithSpAsync(int topCount)
+        public async Task<Movie> GetMovieByIdAsync (int id)
         {
-            try
+            var movie = await _movieRepository.GetMovieByIdAsync(id);
+            if (movie == null)
             {
-                return await
-               _movieRepository.GetTopRatedMoviesWithSpAsync(topCount);
+                throw new ArgumentException("Not Found Movie.");
             }
-            catch (Exception ex)
-            {
-                // Log error, provide a generic message, or rethrow
-                throw new ApplicationException("An error occurred while retrieving top - rated movies.", ex);
-            }
+            return movie;
         }
-
+        
     }
 }
