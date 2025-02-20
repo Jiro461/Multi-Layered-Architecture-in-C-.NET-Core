@@ -1,5 +1,4 @@
-﻿using Humanizer;
-using SOA_BaiTap.CoreLayer.Entities;
+﻿using SOA_BaiTap.CoreLayer.Entities;
 using SOA_BaiTap.RepositoryLayer.Interfaces;
 
 namespace SOA_BaiTap.ServiceLayer.Services

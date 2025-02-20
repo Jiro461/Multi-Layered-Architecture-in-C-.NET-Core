@@ -11,7 +11,7 @@ namespace MovieSeries.Tests.Controllers
     public class MovieControllerTests
     {
         private readonly Mock<IMovieService> _serviceMock;
-        private readonly MovieController _controller;
+        private readonly  MovieController _controller;
 
         public MovieControllerTests()
         {
