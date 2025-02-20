@@ -16,7 +16,7 @@ namespace SOA_BaiTap.RepositoryLayer
         {
             if((await IsTagExist(tag)).Exist) 
             {
-                throw new NotImplementedException();
+                throw new InvalidOperationException($"Tag '{tag}' already exists.");
             }
             await _context.Tags.AddAsync(new Tag
             {
