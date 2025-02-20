@@ -8,4 +8,11 @@
         public string Description { get; set; }
         public ICollection<string> Tags { get; set; }
     }
+
+    public class MovieGetDTO : MovieDTO
+    {
+        public int Id { get; set; }
+
+        
+    }
 }
